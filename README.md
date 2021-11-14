@@ -1,4 +1,4 @@
-# Trello Clone Coding
+# 🙏 Trello Clone Coding
 
 **Assistant**
  - Trello Clone with React + Redux
