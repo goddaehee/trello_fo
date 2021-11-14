@@ -1,4 +1,4 @@
-# BPM
+# Trello Toy Project
 
 **Assistant**
  - Trello Clone with React + Redux
