@@ -1,7 +1,7 @@
 # BPM
 
 **Assistant**
- - When you deploy your source, it can help you
+ - Trello Clone with React + Redux
 
 **Feachur**
 |Feachure|Description|
