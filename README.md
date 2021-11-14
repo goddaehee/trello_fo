@@ -7,9 +7,8 @@
 |Feachure|Description|
 |:--:|:--:|
 |Author|StudyTeam|
-|SpringBoot|2.5.x|
-|Mysql|5.x|
-|React|x.x.x|
+|Node|14.17.3|
+|yarn|1.22.5|
 |referrence|[goddaehee.tistory.com](http://goddaehee.tistory.com/)
 
 **Style**
