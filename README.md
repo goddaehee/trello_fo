@@ -9,7 +9,6 @@
 |Author|StudyTeam|
 |SpringBoot|2.5.x|
 |Mysql|5.x|
-|Java|11.0.12|
 |React|x.x.x|
 |referrence|[goddaehee.tistory.com](http://goddaehee.tistory.com/)
 
