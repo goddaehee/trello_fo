@@ -1,4 +1,4 @@
-# Trello Toy Project
+# Trello Clone Coding
 
 **Assistant**
  - Trello Clone with React + Redux
