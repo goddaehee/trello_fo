@@ -1,13 +1,163 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(0, 121, 191);
+  display: flex;
+  flex-direction: column;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+header {
+  position: fixed;
+  width: 100%;
+  height: 100px;
+  background-color: #0c3953;
+}
+
+.Contents {
+  position: absolute;
+  top: 100px;
+}
+
+.add_card {
+  color: #5e6c84;
+  padding: 6px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.add_card:hover {
+  background-color: #ffffff67;
+}
+
+.add_card_input {
+  display: inline-block;
+  width: 235px;
+  height: 73px;
+  padding: 6px 8px;
+  background-color: rgb(204, 204, 204);
+  border-radius: 3px;
+  position: relative;
+}
+
+.add_card_input > textarea {
+  -webkit-text-size-adjust: 100%;
+  user-select: none;
+  unicode-bidi: isolate;
+  font: inherit;
+  color: #172b4d;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
+    Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  -webkit-appearance: none;
+  border: none;
+  border-radius: 3px;
+  box-sizing: border-box;
+  line-height: 20px;
+  outline: none;
+  padding: 8px 12px;
+  background-color: #fff;
+  display: block;
+  margin: 0;
+  transition: margin 85ms ease-in, background 85ms ease-in;
+  width: 100%;
+  height: 54px;
+  resize: none;
+}
+
+.add_list {
+  display: inline-block;
+  width: 300px;
+  color: #fff;
+  padding: 6px 8px;
+  background-color: #ffffff3d;
+  border-radius: 3px;
+  cursor: pointer;
+  position: absolute;
+  top: 8px;
+}
+
+.add_list:hover {
+  background-color: #ffffff52;
+}
+
+.add_list_input {
+  display: inline-block;
+  width: 300px;
+  height: 73px;
+  padding: 6px 8px;
+  background-color: rgb(204, 204, 204);
+  border-radius: 3px;
+  position: absolute;
+  top: 8px;
+}
+
+.add_list_input > input {
+  -webkit-text-size-adjust: 100%;
+  user-select: none;
+  white-space: nowrap;
+  unicode-bidi: isolate;
+  font: inherit;
+  color: #172b4d;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
+    Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  -webkit-appearance: none;
+  border: none;
+  border-radius: 3px;
+  box-sizing: border-box;
+  line-height: 20px;
+  outline: none;
+  padding: 8px 12px;
+  background-color: #fff;
+  box-shadow: inset 0 0 0 2px #0079bf;
+  display: block;
+  margin: 0;
+  transition: margin 85ms ease-in, background 85ms ease-in;
+  width: 100%;
+}
+
+.add_list_input > button,
+.add_card_input > button {
+  -webkit-text-size-adjust: 100%;
+  font: inherit;
+  -webkit-appearance: none;
+  outline: none;
+  margin: 4px 4px 0 0;
+  text-align: center;
+  align-items: center;
+  border-radius: 3px;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
+    Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  justify-content: center;
+  line-height: 20px;
+  padding: 6px 12px;
+  text-decoration: none;
+  transition-duration: 85ms;
+  transition-property: background-color, border-color, box-shadow;
+  transition-timing-function: ease;
+  background-color: #0079bf;
+  border: none;
+  box-shadow: none;
+  color: #fff;
+  float: left;
+  height: 32px;
+  min-height: 32px;
+  padding-bottom: 4px;
+  padding-top: 4px;
 }
