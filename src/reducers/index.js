@@ -77,7 +77,7 @@ let card = [
 
 function listReducer(state = list, action){
     if(action.type === 'addList'){
-        
+
         let copy = [...state];
         copy.push({ 
             WORK_LIST_ID: copy[copy.length-1].WORK_LIST_ID + 1,
@@ -89,6 +89,17 @@ function listReducer(state = list, action){
             MOD_ID: "배찬",
             MOD_DTIME: getCurrentDate()
         });
+        return copy;
+    }else if(action.type === 'updateListTitle'){
+        
+        let copy = [...state];
+        
+        let updateListItem = copy[action.payload[1]-1];
+
+        updateListItem.WORK_LIST_TITLE = action.payload[0];
+        updateListItem.MOD_ID = "배찬";
+        updateListItem.MOD_DTIME = getCurrentDate();
+
         return copy;
     }else{
         return state;

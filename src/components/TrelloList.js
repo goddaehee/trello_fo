@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux";
 
 import TrelloCard from "./TrelloCard";
@@ -10,22 +10,54 @@ const TrelloList = (props) =>{
     let [addCardOpen,addCardOpenUpdate] = useState(false);
     let [addCardInput,addCardInputUpdate] = useState('');
     
+    let [listTitleOpen,listTitleOpenUpdate] = useState(false);
+    let [listTitleInput,listTitleInputUpdate] = useState(props.listInfo.WORK_LIST_TITLE);
+
     let dispatch = useDispatch();
+
+    const addInputState = (type) => {   // onBlur처리 되었을 때 실행
+        
+        if(type === "list"){
+            listTitleOpenUpdate(false); // list 제목 update창 닫기
+
+            if(listTitleInput !== props.listInfo.WORK_LIST_TITLE){      // 만약 list 제목이 변경된 상태로 blur되었다면 dispatch 처리해주기
+                dispatch({type:"updateListTitle", payload: [listTitleInput,props.listInfo.WORK_LIST_ID]});
+                console.log("list dispatch 발생");
+            }
+        }else if(type === "card"){
+            if(addCardInput === ""){
+                return false;
+            }
+            addCardOpenUpdate(false);
+            addCardInputUpdate('');
+            dispatch({type:'addCard', payload: [addCardInput,props.listInfo.WORK_LIST_ID]});
+            console.log("card dispatch 발생");
+        }
+    }
 
     return(
         <div style={styles.container}>
-            <span><b>{props.listInfo.WORK_LIST_TITLE}</b></span>
+            
+            {
+                listTitleOpen === false
+                ? <div onClick={ () => listTitleOpenUpdate(true)}><b>{listTitleInput}</b></div>
+                : <textarea className="list_title_textarea" value={listTitleInput} 
+                    onChange={ (e) => listTitleInputUpdate(e.target.value) }
+                    onBlur={ () => addInputState("list") } />
+            }
+            
+            
             <div style={styles.list}>
                 {
                     cardReducer.map( (item,index) => {
                         return(
-                            <>
-                            {
-                                props.listInfo.WORK_LIST_ID === cardReducer[index].WORK_LIST_ID
-                                ? <TrelloCard cardInfo={cardReducer[index]} key={index}/>
-                                : null
-                            }
-                            </>
+                            <div key={index}>
+                                {
+                                    props.listInfo.WORK_LIST_ID === cardReducer[index].WORK_LIST_ID
+                                    ? <TrelloCard cardInfo={cardReducer[index]} />
+                                    : null
+                                }
+                            </div>
                         )
                     })
                 }
@@ -34,17 +66,7 @@ const TrelloList = (props) =>{
                 ? <div className="add_card" onClick={ () => { addCardOpenUpdate(true); }} >+ Add a card</div>
                 : <div className="add_card_input">
                     <textarea onChange={ (e) => addCardInputUpdate(e.target.value) } placeholder="Enter a title for this card…"></textarea>
-                    <button onClick={ () => {
-
-                        if(addCardInput === ""){
-                            return false;
-                        }
-
-                        dispatch({type:'addCard', payload: [addCardInput,props.listInfo.WORK_LIST_ID]});
-                        addCardOpenUpdate(false); 
-                        addCardInputUpdate('');
-
-                    }}>Add Card</button>
+                    <button onClick={ () => addInputState("card") } >Add Card</button>
                     <button onClick={ () => {addCardOpenUpdate(false); addCardInputUpdate('');}}>닫기</button>
                     </div>
                 }

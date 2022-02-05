@@ -74,6 +74,34 @@ header {
   resize: none;
 }
 
+.list_title_textarea {
+  -webkit-text-size-adjust: 100%;
+  user-select: none;
+  white-space: nowrap;
+  unicode-bidi: isolate;
+  font: inherit;
+  color: #172b4d;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans,
+    Ubuntu, Droid Sans, Helvetica Neue, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  -webkit-appearance: none;
+  border: none;
+  border-radius: 3px;
+  box-sizing: border-box;
+  line-height: 20px;
+  outline: none;
+  padding: 8px 12px;
+  background-color: #fff;
+  box-shadow: inset 0 0 0 2px #0079bf;
+  display: block;
+  margin: 0;
+  transition: margin 85ms ease-in, background 85ms ease-in;
+  width: 100%;
+  resize: none;
+  height: 36px;
+}
+
 .add_list {
   display: inline-block;
   width: 300px;

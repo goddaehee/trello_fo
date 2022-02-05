@@ -18,7 +18,8 @@ const TrelloCard = (props) => {
 const styles= {
     card: {
         marginTop: '8px',
-        marginBottom: '8px'
+        marginBottom: '8px',
+        whiteSpace: 'normal'        // card 줄바꿈 처리
     }
 }
 
