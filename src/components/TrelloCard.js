@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';

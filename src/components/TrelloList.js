@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 
 import TrelloCard from "./TrelloCard";
+import MenuIcon from '@material-ui/icons/Menu';
 
 const TrelloList = (props) =>{
 
@@ -13,8 +14,13 @@ const TrelloList = (props) =>{
     let [listTitleOpen,listTitleOpenUpdate] = useState(false);
     let [listTitle,listTitleUpdate] = useState(props.listInfo.WORK_LIST_TITLE);
 
+    let [menuIconOpen,menuIconOpenUpdate] = useState(false);
+
     let dispatch = useDispatch();
 
+    addEventListener
+
+    console.log(menuIconOpen);
     const addInputState = (type) => {   // onBlur처리 되었을 때 실행
         
         if(type === "list"){
@@ -38,10 +44,14 @@ const TrelloList = (props) =>{
 
     return(
         <div style={styles.container}>
+
             
             {
                 listTitleOpen === false
-                ? <div onClick={ () => listTitleOpenUpdate(true)}><b>{listTitle}</b></div>
+                ? <div onClick={ () => listTitleOpenUpdate(true) }>
+                    <b>{listTitle}</b>
+                    <MenuIcon className="menuIcon" onClick={()=>menuIconOpenUpdate(true)} style={styles.menuIcon}></MenuIcon>
+                  </div>
                 : <textarea className="list_title_textarea" value={listTitle} 
                     onChange={ (e) => listTitleUpdate(e.target.value) }
                     onBlur={ () => addInputState("list") } 
@@ -49,7 +59,7 @@ const TrelloList = (props) =>{
                     onFocus={(e) => e.currentTarget.select()} />
             }
             
-            
+
             <div style={styles.list}>
                 {
                     cardReducer.map( (item,index) => {
@@ -92,10 +102,13 @@ const styles= {
     list: {
         marginTop: '8px',
         marginBottom: '8px'
+    },
+    menuIcon: {
+        float:"right", 
+        color:"#000",
+        opacity: "0.5"
     }
 }
-
-
 
 
 export default TrelloList;
