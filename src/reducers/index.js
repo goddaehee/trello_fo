@@ -89,7 +89,10 @@ function listReducer(state = list, action){
             MOD_ID: "배찬",
             MOD_DTIME: getCurrentDate()
         });
+
+        console.log(copy);
         return copy;
+        
     }else if(action.type === 'updateListTitle'){
         
         let copy = [...state];
@@ -99,8 +102,10 @@ function listReducer(state = list, action){
         updateListItem.WORK_LIST_TITLE = action.payload[0];
         updateListItem.MOD_ID = "배찬";
         updateListItem.MOD_DTIME = getCurrentDate();
-
+        
+        console.log(copy);
         return copy;
+
     }else{
         return state;
     }
@@ -123,7 +128,23 @@ function cardReducer(state = card, action){
             MOD_ID: "배찬",
             MOD_DTIME: getCurrentDate()
         });
+
+        console.log(copy);
         return copy;
+
+    }else if(action.type === 'updateCardTitle'){
+        
+        let copy = [...state];
+
+        let updateCardItem = copy[action.payload[1]-1];
+
+        updateCardItem.CARD_TITLE = action.payload[0];
+        updateCardItem.MOD_ID = "배찬";
+        updateCardItem.MOD_DTIME = getCurrentDate();
+        
+        console.log(copy);
+        return copy;
+
     }else{
         return state;
     }

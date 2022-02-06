@@ -76,7 +76,7 @@ header {
 
 .list_title_textarea {
   -webkit-text-size-adjust: 100%;
-  user-select: none;
+  user-select: all;
   white-space: nowrap;
   unicode-bidi: isolate;
   font: inherit;
@@ -183,7 +183,6 @@ header {
   border: none;
   box-shadow: none;
   color: #fff;
-  float: left;
   height: 32px;
   min-height: 32px;
   padding-bottom: 4px;
