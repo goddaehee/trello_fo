@@ -18,8 +18,6 @@ const TrelloList = (props) =>{
 
     let dispatch = useDispatch();
 
-    addEventListener
-
     console.log(menuIconOpen);
     const addInputState = (type) => {   // onBlur처리 되었을 때 실행
         
