@@ -21,16 +21,18 @@ const TrelloList = (props) =>{
             listTitleOpenUpdate(false); // list 제목 update창 닫기
 
             if(listTitle !== props.listInfo.WORK_LIST_TITLE){      // 만약 list 제목이 변경된 상태로 blur되었다면 dispatch 처리해주기
-                dispatch({type:"updateListTitle", payload: [listTitle,props.listInfo.WORK_LIST_ID]});
                 console.log("list dispatch 발생");
+                dispatch({type:"updateListTitle", payload: [listTitle,props.listInfo.WORK_LIST_ID]});
             }
         }else if(type === "card"){
             if(addCardTitle === ""){
                 return false;
             }
             addCardOpenUpdate(false);
-            dispatch({type:'addCard', payload: [addCardTitle,props.listInfo.WORK_LIST_ID]});
+            
             console.log("card dispatch 발생");
+            dispatch({type:'addCard', payload: [addCardTitle,props.listInfo.WORK_LIST_ID]});
+            
         }
     }
 
