@@ -17,9 +17,6 @@ const TrelloList = (props) =>{
     let [listTitleOpen,listTitleOpenUpdate] = useState(false);
     let [listTitle,listTitleUpdate] = useState(props.listInfo.WORK_LIST_TITLE);
 
-    let [menuIconOpen,menuIconOpenUpdate] = useState(false);
-    console.log(menuIconOpen);
-
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
@@ -173,9 +170,7 @@ const styles= {
     popupBody: {
         borderBottom: '1px solid #ccc',
         padding:'10px'
-    },
-    
-
+    }
 }
 
 
