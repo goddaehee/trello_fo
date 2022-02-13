@@ -12,8 +12,6 @@ let [addListTitle,addListTitleUpdate] = useState('');
 
 let dispatch = useDispatch();
 
-
-
   return (
     <div className="App" style={{ whiteSpace: "nowrap"}}>
       <header>
@@ -57,7 +55,6 @@ let dispatch = useDispatch();
         }
 
       </div>
-      
     </div>
       
   );

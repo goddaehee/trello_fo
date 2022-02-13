@@ -3,6 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import TrelloCard from "./TrelloCard";
 import MenuIcon from '@material-ui/icons/Menu';
+import CloseIcon from '@material-ui/icons/Close';
+
+import { Popover } from '@material-ui/core';
 
 const TrelloList = (props) =>{
 
@@ -15,10 +18,25 @@ const TrelloList = (props) =>{
     let [listTitle,listTitleUpdate] = useState(props.listInfo.WORK_LIST_TITLE);
 
     let [menuIconOpen,menuIconOpenUpdate] = useState(false);
+    console.log(menuIconOpen);
+
+    const [anchorEl, setAnchorEl] = useState(null);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+      };
+    
+      const handleClose = () => {
+        setAnchorEl(null);
+      };
+    
+      const popoverOpen = Boolean(anchorEl);
+      const popoverId = popoverOpen ? 'simple-popover' : undefined;
 
     let dispatch = useDispatch();
+    
+    
 
-    console.log(menuIconOpen);
     const addInputState = (type) => {   // onBlur처리 되었을 때 실행
         
         if(type === "list"){
@@ -46,9 +64,35 @@ const TrelloList = (props) =>{
             
             {
                 listTitleOpen === false
-                ? <div onClick={ () => listTitleOpenUpdate(true) }>
-                    <b>{listTitle}</b>
-                    <MenuIcon className="menuIcon" onClick={()=>menuIconOpenUpdate(true)} style={styles.menuIcon}></MenuIcon>
+                ? <div>
+                    <div style={styles.containerHeader} onClick={ () => listTitleOpenUpdate(true) }>
+                        <b>{listTitle}</b>
+                    </div>
+                    <MenuIcon className="menuIcon" style={styles.menuIcon}
+                        aria-describedby={popoverId} variant="contained" onClick={handleClick} />
+                    <Popover
+                        id={popoverId}
+                        open={popoverOpen}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                        }}>
+                        <div style={styles.popupContainer}>
+                            <div style={styles.popupHeader}>
+                                List actions
+                                <CloseIcon onClick={handleClose} style={{"float":"right", "cursor":"pointer"}}/>
+                            </div>
+                            <div style={styles.popupBody} className="popupBody">
+                                <ul>
+                                    <li onClick={ () => { addCardOpenUpdate(true); handleClose();}}>Add card...</li>
+                                    <li>Copy list...</li>
+                                    <li>Move list...</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </Popover>
                   </div>
                 : <textarea className="list_title_textarea" value={listTitle} 
                     onChange={ (e) => listTitleUpdate(e.target.value) }
@@ -99,13 +143,39 @@ const styles= {
     },
     list: {
         marginTop: '8px',
-        marginBottom: '8px'
+        marginBottom: '8px',
+        clear: 'both'
     },
     menuIcon: {
         float:"right", 
         color:"#000",
         opacity: "0.5"
-    }
+    },
+    containerHeader: {
+        float: 'left',
+        width:'85%'
+    },
+
+    popupContainer: {
+        zIndex: '1',
+        width: '200px',
+        height: '300px',
+        backgroundColor: '#eee',
+        borderRadius: '3px',
+        padding: '3px'
+    },
+    popupHeader: {
+        textAlign: 'center',
+        borderBottom: '1px solid #ccc',
+        padding:'10px'
+        
+    },
+    popupBody: {
+        borderBottom: '1px solid #ccc',
+        padding:'10px'
+    },
+    
+
 }
 
 
