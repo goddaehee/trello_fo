@@ -21,3 +21,17 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+.vscode/*
+/.log/
+
+.idea/*
+
+# emacs
+.projectile
+.dir-locals.el
+/.tags
+/public/mockServiceWorker.js
+*.tmp
+*.log
+*.iml
