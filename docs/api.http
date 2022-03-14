@@ -1,0 +1,17 @@
+# @baseUrl = https://trello-api-gdh.herokuapp.com
+@baseUrl = https://trello-api-gdh.herokuapp.com
+
+# @webUrl = https://trello-fo.netlify.app/
+# swagger url = https://trello-api-gdh.herokuapp.com/swagger-ui.html
+
+### [work-list] 생성
+POST  {{baseUrl}}/list HTTP/1.1
+Content-Type: application/json
+
+[{"workListTitle":"test"}]
+
+### [Card] 생성 (오류 수정 필요)
+POST  {{baseUrl}}/card HTTP/1.1
+Content-Type: application/json
+
+[{"cardTitle":"test2", "workListId":1}]

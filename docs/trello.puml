@@ -1,0 +1,6 @@
+' Alt + D
+@startmindmap
++[#Red] 트렐로
+++[#Orange] TrelloList
++++[#lightgreen] TrelloCrd
+@endmindmap
