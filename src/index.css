@@ -76,7 +76,7 @@ header {
 
 .list_title_textarea {
   -webkit-text-size-adjust: 100%;
-  user-select: none;
+  user-select: all;
   white-space: nowrap;
   unicode-bidi: isolate;
   font: inherit;
@@ -94,10 +94,10 @@ header {
   padding: 8px 12px;
   background-color: #fff;
   box-shadow: inset 0 0 0 2px #0079bf;
-  display: block;
+  display: inline;
   margin: 0;
   transition: margin 85ms ease-in, background 85ms ease-in;
-  width: 100%;
+  width: 225px;
   resize: none;
   height: 36px;
 }
@@ -183,9 +183,28 @@ header {
   border: none;
   box-shadow: none;
   color: #fff;
-  float: left;
   height: 32px;
   min-height: 32px;
   padding-bottom: 4px;
   padding-top: 4px;
+}
+
+.menuIcon:hover {
+  opacity: 1;
+  transition: all 200ms;
+  border-radius: 3px;
+  border: 0.1px solid #6b778c;
+}
+.popupBody > ul {
+  all: unset;
+  list-style: none;
+}
+.popupBody > ul > li {
+  margin: 3px;
+  cursor: pointer;
+}
+.popupBody > ul > li:hover {
+  background-color: #bbb;
+  margin-left: 0px;
+  width: 120%;
 }

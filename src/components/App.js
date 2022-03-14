@@ -8,7 +8,7 @@ function App() {
 const listReducer = useSelector( (state) => state.listReducer);
 
 let [addListOpen,addListOpenUpdate] = useState(false);
-let [addListInput,addListInputUpdate] = useState('');
+let [addListTitle,addListTitleUpdate] = useState('');
 
 let dispatch = useDispatch();
 
@@ -33,29 +33,28 @@ let dispatch = useDispatch();
           addListOpen === false
           ? <div className="add_list" onClick={ () => { addListOpenUpdate(true); }} >+ Add another list</div>
           : <div className="add_list_input">
-              <input type='text' onChange={ (e) => addListInputUpdate(e.target.value) } placeholder="Enter list title..."></input>
+              <input type='text' onChange={ (e) => addListTitleUpdate(e.target.value) } placeholder="Enter list title..."></input>
               <button onClick={ () => {
 
-                  if(addListInput === ""){
+                  if(addListTitle === ""){
                     return false;
                   }
 
-                  dispatch({type:'addList', payload: addListInput});
+                  dispatch({type:'addList', payload: addListTitle});
 
                   addListOpenUpdate(false); 
-                  addListInputUpdate('');
+                  addListTitleUpdate('');
 
                   setTimeout(() => {
                     window.scrollTo(50000,0);
                   },0)
 
               }}>Add list</button>
-              <button onClick={ () => {addListOpenUpdate(false); addListInputUpdate('');}}>닫기</button>
+              <button onClick={ () => {addListOpenUpdate(false); addListTitleUpdate('');}}>Close</button>
             </div>
         }
 
       </div>
-      
     </div>
       
   );
