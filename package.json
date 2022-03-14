@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.25.0",
     "global": "^4.4.0",
+    "msw": "^0.39.1",
     "node-sass": "^7.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -28,7 +29,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "homepage":"https://trello-fo.netlify.app/",
+  "homepage": "https://trello-fo.netlify.app/",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -46,6 +47,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
   }
 }
