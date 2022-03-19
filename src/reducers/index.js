@@ -112,7 +112,6 @@ function listReducer(state = list, action){
             MOD_ID: "배찬",
             MOD_DTIME: getCurrentDate()
         });
-
         console.log(copy);
         return copy;
         
@@ -127,12 +126,6 @@ function listReducer(state = list, action){
                 element.MOD_DTIME = getCurrentDate();
             }
         });
-        
-        // let updateListItem = copy[action.payload[1]-1];
-
-        // updateListItem.WORK_LIST_TITLE = action.payload[0];
-        // updateListItem.MOD_ID = "배찬";
-        // updateListItem.MOD_DTIME = getCurrentDate();
         
         console.log(copy);
         return copy;
