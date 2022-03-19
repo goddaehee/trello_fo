@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, {  useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 
 import TrelloCard from "./TrelloCard";
@@ -9,30 +9,31 @@ import { Popover } from '@material-ui/core';
 
 const TrelloList = (props) =>{
 
+    const listReducer = useSelector( (state) => state.listReducer);
     const cardReducer = useSelector( (state) => state.cardReducer);
 
     let [addCardOpen,addCardOpenUpdate] = useState(false);
     let [addCardTitle,addCardTitleUpdate] = useState('');
     
     let [listTitleOpen,listTitleOpenUpdate] = useState(false);
-    let [listTitle,listTitleUpdate] = useState(props.listInfo.WORK_LIST_TITLE);
+    let [listTitle,listTitleUpdate] = useState(listReducer[props.index].WORK_LIST_TITLE);
+
+    let [moveListOpen,moveListOpenUpdate] = useState(false);
 
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
-      };
+    };
     
-      const handleClose = () => {
+    const handleClose = () => {
         setAnchorEl(null);
-      };
-    
-      const popoverOpen = Boolean(anchorEl);
-      const popoverId = popoverOpen ? 'simple-popover' : undefined;
+    };
+
+    const popoverOpen = Boolean(anchorEl);
+    const popoverId = popoverOpen ? 'simple-popover' : undefined;
 
     let dispatch = useDispatch();
-    
-    
 
     const addInputState = (type) => {   // onBlur처리 되었을 때 실행
         
@@ -41,7 +42,7 @@ const TrelloList = (props) =>{
 
             if(listTitle !== props.listInfo.WORK_LIST_TITLE){      // 만약 list 제목이 변경된 상태로 blur되었다면 dispatch 처리해주기
                 console.log("list dispatch 발생");
-                dispatch({type:"updateListTitle", payload: [listTitle,props.listInfo.WORK_LIST_ID]});
+                dispatch({type:"updateListTitle", payload: [listTitle,listReducer[props.index].WORK_LIST_ID]});
             }
         }else if(type === "card"){
             if(addCardTitle === ""){
@@ -53,7 +54,20 @@ const TrelloList = (props) =>{
             dispatch({type:'addCard', payload: [addCardTitle,props.listInfo.WORK_LIST_ID]});
             
         }
+    };
+
+    const copyList = () => {
+        dispatch({type:"copyList", payload: [props.listInfo.WORK_LIST_ID]});
     }
+
+    const moveList = () =>{
+        dispatch({type:"moveList", payload: [props.index+1, Number(document.getElementById("selectPosition").value)]});
+    }
+
+
+    useEffect( () => {
+        listTitleUpdate(listReducer[props.index].WORK_LIST_TITLE);
+    }, [listReducer]);
 
     return(
         <div style={styles.container}>
@@ -63,7 +77,9 @@ const TrelloList = (props) =>{
                 listTitleOpen === false
                 ? <div>
                     <div style={styles.containerHeader} onClick={ () => listTitleOpenUpdate(true) }>
-                        <b>{listTitle}</b>
+                        {/* <b>{listTitle}</b> */}
+                        <b>{listReducer[props.index].WORK_LIST_TITLE}</b>
+                        <b>{listReducer[props.index].WORK_LIST_ID}</b>
                     </div>
                     <MenuIcon className="menuIcon" style={styles.menuIcon}
                         aria-describedby={popoverId} variant="contained" onClick={handleClick} />
@@ -76,19 +92,47 @@ const TrelloList = (props) =>{
                         vertical: 'bottom',
                         horizontal: 'left',
                         }}>
-                        <div style={styles.popupContainer}>
-                            <div style={styles.popupHeader}>
-                                List actions
-                                <CloseIcon onClick={handleClose} style={{"float":"right", "cursor":"pointer"}}/>
+
+                        {
+                            moveListOpen === false
+                            ? <div style={styles.popupContainer}>
+                                <div style={styles.popupHeader}>
+                                    List actions
+                                    <CloseIcon onClick={handleClose} style={{"float":"right", "cursor":"pointer"}}/>
+                                </div>
+                                <div style={styles.popupBody} className="popupBody">
+                                    <ul>
+                                        <li onClick={ () => { addCardOpenUpdate(true); handleClose();}}>Add card...</li>
+                                        <li onClick={ (e) => { copyList(e); handleClose();}}>Copy list...</li>
+                                        <li onClick={ () => { moveListOpenUpdate(true) }}>Move list...</li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div style={styles.popupBody} className="popupBody">
-                                <ul>
-                                    <li onClick={ () => { addCardOpenUpdate(true); handleClose();}}>Add card...</li>
-                                    <li>Copy list...</li>
-                                    <li>Move list...</li>
-                                </ul>
-                            </div>
-                        </div>
+                            : <div style={styles.popupContainer}>
+                                <div style={styles.popupHeader}>
+                                    Move list
+                                    <CloseIcon onClick={ () => {handleClose(); setTimeout(() => {moveListOpenUpdate(false)},500)}} style={{"float":"right", "cursor":"pointer"}}/>
+                                </div>
+                                <div style={styles.popupBody} className="popupBody">
+                                    <div style={{"display":"flex"}}>
+                                        <div>Position</div>
+                                        <div style={{"flexGrow":"2"}}></div>
+                                        <select id="selectPosition" style={styles.selectBox}>
+                                            {
+                                                listReducer.map( (item,index) => {
+                                                    return(
+                                                        <React.Fragment key={index}>
+                                                            <option>{index+1}</option>
+                                                        </React.Fragment>
+                                                    )
+                                                }) 
+                                            }
+                                        </select>
+                                    </div>
+                                    <button onClick={ () => {moveList(); handleClose(); setTimeout(() => {moveListOpenUpdate(false)},500)} }>Move</button>
+                                </div>
+                            </div>   
+                        }
                     </Popover>
                   </div>
                 : <textarea className="list_title_textarea" value={listTitle} 
@@ -105,8 +149,8 @@ const TrelloList = (props) =>{
                         return(
                             <div key={index}>
                                 {
-                                    props.listInfo.WORK_LIST_ID === cardReducer[index].WORK_LIST_ID
-                                    ? <TrelloCard cardInfo={cardReducer[index]} />
+                                    props.listInfo.WORK_LIST_ID === item.WORK_LIST_ID
+                                    ? <TrelloCard cardInfo={item} />
                                     : null
                                 }
                             </div>
@@ -170,6 +214,11 @@ const styles= {
     popupBody: {
         borderBottom: '1px solid #ccc',
         padding:'10px'
+    },
+    selectBox: {
+        width: '85px',
+        height:'25px',
+        
     }
 }
 

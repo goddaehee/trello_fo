@@ -23,7 +23,7 @@ let dispatch = useDispatch();
           {
             listReducer.map( (item,index) => {
               return(
-                <TrelloList listInfo={item} key={index}/>
+                <TrelloList listInfo={listReducer[index]} index={index} key={index}/>
               )
             })
           }
@@ -38,9 +38,9 @@ let dispatch = useDispatch();
 
                   if(addListTitle === ""){
                     return false;
-                  }
+                  } 
 
-                  dispatch({type:'addList', payload: addListTitle});
+                  dispatch({type:'addList', payload: addListTitle});  
 
                   addListOpenUpdate(false); 
                   addListTitleUpdate('');

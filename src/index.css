@@ -156,7 +156,8 @@ header {
 }
 
 .add_list_input > button,
-.add_card_input > button {
+.add_card_input > button,
+.popupBody > button {
   -webkit-text-size-adjust: 100%;
   font: inherit;
   -webkit-appearance: none;
