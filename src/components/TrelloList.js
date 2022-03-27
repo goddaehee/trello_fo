@@ -6,6 +6,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 
 import { Popover } from '@material-ui/core';
+import { Droppable } from "react-beautiful-dnd";
 
 const TrelloList = (props) =>{
 
@@ -70,104 +71,106 @@ const TrelloList = (props) =>{
     }, [listReducer]);
 
     return(
-        <div style={styles.container}>
+        <Droppable draggableId={String(props.listInfo.WORK_LIST_ID)}>
+            { (provided) => (
+                <div style={styles.container} {...provided.droppableProps} ref={provided.innerRef}>
+                {
+                    listTitleOpen === false
+                    ? <div>
+                        <div style={styles.containerHeader} onClick={ () => listTitleOpenUpdate(true) }>
+                            <b>{listReducer[props.index].WORK_LIST_TITLE}</b>
+                        </div>
+                        <MenuIcon className="menuIcon" style={styles.menuIcon}
+                            aria-describedby={popoverId} variant="contained" onClick={handleClick} />
+                        <Popover
+                            id={popoverId}
+                            open={popoverOpen}
+                            anchorEl={anchorEl}
+                            onClose={handleClose}
+                            anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                            }}>
 
-            
-            {
-                listTitleOpen === false
-                ? <div>
-                    <div style={styles.containerHeader} onClick={ () => listTitleOpenUpdate(true) }>
-                        {/* <b>{listTitle}</b> */}
-                        <b>{listReducer[props.index].WORK_LIST_TITLE}</b>
-                        <b>{listReducer[props.index].WORK_LIST_ID}</b>
-                    </div>
-                    <MenuIcon className="menuIcon" style={styles.menuIcon}
-                        aria-describedby={popoverId} variant="contained" onClick={handleClick} />
-                    <Popover
-                        id={popoverId}
-                        open={popoverOpen}
-                        anchorEl={anchorEl}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                        }}>
-
-                        {
-                            moveListOpen === false
-                            ? <div style={styles.popupContainer}>
-                                <div style={styles.popupHeader}>
-                                    List actions
-                                    <CloseIcon onClick={handleClose} style={{"float":"right", "cursor":"pointer"}}/>
-                                </div>
-                                <div style={styles.popupBody} className="popupBody">
-                                    <ul>
-                                        <li onClick={ () => { addCardOpenUpdate(true); handleClose();}}>Add card...</li>
-                                        <li onClick={ (e) => { copyList(e); handleClose();}}>Copy list...</li>
-                                        <li onClick={ () => { moveListOpenUpdate(true) }}>Move list...</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            : <div style={styles.popupContainer}>
-                                <div style={styles.popupHeader}>
-                                    Move list
-                                    <CloseIcon onClick={ () => {handleClose(); setTimeout(() => {moveListOpenUpdate(false)},500)}} style={{"float":"right", "cursor":"pointer"}}/>
-                                </div>
-                                <div style={styles.popupBody} className="popupBody">
-                                    <div style={{"display":"flex"}}>
-                                        <div>Position</div>
-                                        <div style={{"flexGrow":"2"}}></div>
-                                        <select id="selectPosition" style={styles.selectBox}>
-                                            {
-                                                listReducer.map( (item,index) => {
-                                                    return(
-                                                        <React.Fragment key={index}>
-                                                            <option>{index+1}</option>
-                                                        </React.Fragment>
-                                                    )
-                                                }) 
-                                            }
-                                        </select>
+                            {
+                                moveListOpen === false
+                                ? <div style={styles.popupContainer}>
+                                    <div style={styles.popupHeader}>
+                                        List actions
+                                        <CloseIcon onClick={handleClose} style={{"float":"right", "cursor":"pointer"}}/>
                                     </div>
-                                    <button onClick={ () => {moveList(); handleClose(); setTimeout(() => {moveListOpenUpdate(false)},500)} }>Move</button>
+                                    <div style={styles.popupBody} className="popupBody">
+                                        <ul>
+                                            <li onClick={ () => { addCardOpenUpdate(true); handleClose();}}>Add card...</li>
+                                            <li onClick={ (e) => { copyList(e); handleClose();}}>Copy list...</li>
+                                            <li onClick={ () => { moveListOpenUpdate(true) }}>Move list...</li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>   
-                        }
-                    </Popover>
-                  </div>
-                : <textarea className="list_title_textarea" value={listTitle} 
-                    onChange={ (e) => listTitleUpdate(e.target.value) }
-                    onBlur={ () => addInputState("list") } 
-                    autoFocus 
-                    onFocus={(e) => e.currentTarget.select()} />
-            }
-            
+                                : <div style={styles.popupContainer}>
+                                    <div style={styles.popupHeader}>
+                                        Move list
+                                        <CloseIcon onClick={ () => {handleClose(); setTimeout(() => {moveListOpenUpdate(false)},500)}} style={{"float":"right", "cursor":"pointer"}}/>
+                                    </div>
+                                    <div style={styles.popupBody} className="popupBody">
+                                        <div style={{"display":"flex"}}>
+                                            <div>Position</div>
+                                            <div style={{"flexGrow":"2"}}></div>
+                                            <select id="selectPosition" style={styles.selectBox}>
+                                                {
+                                                    listReducer.map( (item,index) => {
+                                                        return(
+                                                            <React.Fragment key={index}>
+                                                                <option>{index+1}</option>
+                                                            </React.Fragment>
+                                                        )
+                                                    }) 
+                                                }
+                                            </select>
+                                        </div>
+                                        <button onClick={ () => {moveList(); handleClose(); setTimeout(() => {moveListOpenUpdate(false)},500)} }>Move</button>
+                                    </div>
+                                </div>   
+                            }
+                        </Popover>
+                    </div>
+                    : <textarea className="list_title_textarea" value={listTitle} 
+                        onChange={ (e) => listTitleUpdate(e.target.value) }
+                        onBlur={ () => addInputState("list") } 
+                        autoFocus 
+                        onFocus={(e) => e.currentTarget.select()} />
+                }
+                
 
-            <div style={styles.list}>
-                {
-                    cardReducer.map( (item,index) => {
-                        return(
-                            <div key={index}>
-                                {
-                                    props.listInfo.WORK_LIST_ID === item.WORK_LIST_ID
-                                    ? <TrelloCard cardInfo={item} />
-                                    : null
-                                }
-                            </div>
-                        )
-                    })
-                }
-                {
-                addCardOpen === false
-                ? <div className="add_card" onClick={ () => { addCardOpenUpdate(true); }} >+ Add a card</div>
-                : <div className="add_card_input">
-                    <textarea onChange={ (e) => addCardTitleUpdate(e.target.value) } placeholder="Enter a title for this card…"></textarea>
-                    <button onClick={ () => addInputState("card") } >Add Card</button>
-                    <button onClick={ () => {addCardOpenUpdate(false);}}>Close</button>
-                  </div>
-                }
+                <div style={styles.list}>
+                    {
+                        cardReducer.map( (item,index) => {
+                            return(
+                                <div key={index}>
+                                    {
+                                        props.listInfo.WORK_LIST_ID === item.WORK_LIST_ID
+                                        ? <TrelloCard cardInfo={item} index={index}/>
+                                        : null
+                                    }
+                                </div>
+                            )
+                        })
+                    }
+                    {
+                    addCardOpen === false
+                    ? <div className="add_card" onClick={ () => { addCardOpenUpdate(true); }} >+ Add a card</div>
+                    : <div className="add_card_input">
+                        <textarea onChange={ (e) => addCardTitleUpdate(e.target.value) } placeholder="Enter a title for this card…"></textarea>
+                        <button onClick={ () => addInputState("card") } >Add Card</button>
+                        <button onClick={ () => {addCardOpenUpdate(false);}}>Close</button>
+                    </div>
+                    }
+                </div>
+                {provided.placeholder}
             </div>
-        </div>
+            )}
+            
+        </Droppable>
     )
 }
 

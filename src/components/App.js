@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import '../index.css';
 import TrelloList from "./TrelloList";
+import {DragDropContext} from "react-beautiful-dnd";
 
 function App() {
 
@@ -17,17 +18,17 @@ let dispatch = useDispatch();
       <header>
         
       </header>
-      <div className="Contents" >
+      <DragDropContext>
+      <div className="Contents">
 
-        <span> 
           {
             listReducer.map( (item,index) => {
               return(
-                <TrelloList listInfo={listReducer[index]} index={index} key={index}/>
+                    <TrelloList listInfo={listReducer[index]} index={index} key={index}/>
               )
             })
           }
-        </span>
+        
 
         {
           addListOpen === false
@@ -53,8 +54,8 @@ let dispatch = useDispatch();
               <button onClick={ () => {addListOpenUpdate(false); addListTitleUpdate('');}}>Close</button>
             </div>
         }
-
       </div>
+      </DragDropContext>
     </div>
       
   );
