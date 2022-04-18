@@ -18,133 +18,185 @@ import CloseIcon from '@material-ui/icons/Close';
 
 const TrelloCard = (props) => {
 
-    let [icon,iconUpdate] = useState(false);
+  let [icon, setIcon] = useState(false);
 
-    let [cardTitle,cardTitleUpdate] = useState(props.cardInfo.CARD_TITLE);
-    let [cardTitleOpen,cardTitleOpenUpdate] = useState(false);
+  let [cardTitle, setCardTitle] = useState(props.cardInfo.cardTitle);
+  let [cardTitleOpen, setCardTitleOpen] = useState(false);
 
-    let dispatch = useDispatch();
+  let dispatch = useDispatch();
 
-    const onClickSave = () => {
-        
-        cardTitleOpenUpdate(false);
+  const onClickSave = () => {
 
-        if(cardTitle !== props.cardInfo.CARD_TITLE){
-            console.log("카드 타이틀 수정 dispatch 발생");
-            dispatch({type: "updateCardTitle", payload: [cardTitle,props.cardInfo.CARD_ID]});
-        }
+    setCardTitleOpen(false);
+
+    if (cardTitle !== props.cardInfo.cardTitle) {
+      console.log("카드 타이틀 수정 dispatch 발생");
+      dispatch({ type: "updateCardTitle", payload: [cardTitle, props.cardInfo.cardId] });
+    }
+  }
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const [dialogDiscriptionTextareaOpen, setDialogDiscriptionTextareaOpen] = useState(false);
+  const [dialogActivityTextareaOpen, setDialogActivityTextareaOpen] = useState(false);
+
+  const handleInputTextarea = (e) => {
+
+    {
+      e.currentTarget.value !== ""
+        ? setDialogActivityTextareaOpen(true)
+        : setDialogActivityTextareaOpen(false);
     }
 
-    const [open, setOpen] = React.useState(false);
+    e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
+    e.currentTarget.parentElement.style.height = e.currentTarget.scrollHeight + "px";
 
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
-    
-    return(
-        <>
-            <Draggable draggableId={String(props.cardInfo.CARD_ID)} index={props.index}>
-                {(provided) => 
-                    <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                    {
-                        cardTitleOpen === false
-                        ? <Card style={styles.card} onMouseEnter={ () => iconUpdate(true) } 
-                                onMouseLeave={ () => iconUpdate(false)} 
-                                onClick={handleClickOpen} >
-                            <Typography gutterBottom style={{display:"inline"}}>
-                                {cardTitle}
-                            </Typography>
-                            { icon === true && <EditIcon style={{float:"right", color:"#bbb"}} onClick={()=>cardTitleOpenUpdate(true)}></EditIcon> }
-                        </Card>
-                        : <div className="add_card_input">
-                            <textarea onChange={ (e) => {cardTitleUpdate(e.target.value)} }value={cardTitle} 
-                            autoFocus 
-                            onFocus={(e) => e.currentTarget.select()} />
-                            <button onClick={ onClickSave }>Save</button>
-                            <button onClick={ () => {cardTitleOpenUpdate(false); cardTitleUpdate(props.cardInfo.CARD_TITLE)}}>Close</button>
-                        </div>
-                    }
-                    </div>
-                }
-            
-            </Draggable>
-            <BootstrapDialog
-                onClose={handleClose}
-                aria-labelledby="customized-dialog-title"
-                open={open}
-                fullWidth={true}
-                maxWidth={'md'}
-            >
-                <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+  }
+
+
+  return (
+    <>
+      <Draggable draggableId={String(props.cardInfo.cardId)} index={props.index}>
+        {(provided) =>
+          <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+            {
+              cardTitleOpen === false
+                ? <Card style={styles.card} onMouseEnter={() => setIcon(true)}
+                  onMouseLeave={() => setIcon(false)}
+                  onClick={handleClickOpen} >
+                  <Typography gutterBottom style={{ display: "inline" }}>
                     {cardTitle}
-                </BootstrapDialogTitle>
-                <DialogContent dividers>
-                    <Typography gutterBottom >
-                    Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
+                  </Typography>
+                  {icon === true && <EditIcon style={{ float: "right", color: "#bbb" }} onClick={(event) => { setCardTitleOpen(true); event.stopPropagation(); }}></EditIcon>}
+                </Card>
+                : <div className="addCardInput">
+                  <textarea onChange={(e) => { setCardTitle(e.target.value) }} value={cardTitle}
+                    autoFocus
+                    onFocus={(e) => e.currentTarget.select()} />
+                  <button onClick={onClickSave}>Save</button>
+                  <button onClick={() => { setCardTitleOpen(false); setCardTitle(props.cardInfo.cardTitle) }}>Close</button>
+                </div>
+            }
+          </div>
+        }
 
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+      </Draggable>
+      <BootstrapDialog
+        onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={open}
+        fullWidth={true}
+        maxWidth={'md'}
+      >
+        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+          {cardTitle}
+        </BootstrapDialogTitle>
+        <DialogContent dividers className="dialogContent">
+          <div>
+            <div className="flex-container">
+              <h3>Discription</h3>
+              {
+                dialogDiscriptionTextareaOpen === false
+                  ? <button style={{ margin: "15px 5px" }} onClick={() => setDialogDiscriptionTextareaOpen(true)}>Edit</button>
+                  : ""
+              }
+            </div>
+            <div>
+              {
+                dialogDiscriptionTextareaOpen === false
+                  ?
+                  <div className="dialog-description-view" onClick={() => setDialogDiscriptionTextareaOpen(true)}>
+                    Add a more detailed description...
+                  </div>
+                  :
+                  <div>
+                    <textarea className="dialog-description-textarea" placeholder="Add a more detailed description..."
+                      autoFocus
+                      onBlur={() => setDialogDiscriptionTextareaOpen(false)}>
 
-Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.
-                    </Typography>
-                </DialogContent>
-                <DialogContent dividers>
-                    <Typography gutterBottom>
-                        Activity
-                    </Typography>
-                </DialogContent>
-                <DialogActions>
-                </DialogActions>
-            </BootstrapDialog>
-        </>
-    )
+                    </textarea>
+                    <button>Save</button>
+                  </div>
+              }
+            </div>
+          </div>
+        </DialogContent>
+        <DialogContent dividers className="dialogContent">
+          <div>
+            <div className="flex-container">
+              <h3>Activity</h3>
+            </div>
+            <div className="dialog-activity-box">
+              <textarea className="dialog-activity-textarea" placeholder="Write a comment..."
+                onInput={(event) => { handleInputTextarea(event) }}>
+
+              </textarea>
+            </div>
+            {
+              dialogActivityTextareaOpen === true
+                ? <button>Save</button>
+                : <button disabled style={{ opacity: "0.5", cursor: "not-allowed" }}>Save</button>
+            }
+          </div>
+        </DialogContent>
+        <DialogActions>
+
+        </DialogActions>
+      </BootstrapDialog>
+    </>
+  )
 }
 
-const styles= {
-    card: {
-        marginTop: '8px',
-        marginBottom: '8px',
-        whiteSpace: 'normal'        // card 줄바꿈 처리
-    }
+const styles = {
+  card: {
+    marginTop: '8px',
+    marginBottom: '8px',
+    whiteSpace: 'normal'        // card 줄바꿈 처리
+  }
 }
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    '& .MuiDialogContent-root': {
-      padding: theme.spacing(2),
-    },
-    '& .MuiDialogActions-root': {
-      padding: theme.spacing(1),
-    },
-  }));
+  '& .MuiDialogContent-root': {
+    padding: theme.spacing(2),
+  },
+  '& .MuiDialogActions-root': {
+    padding: theme.spacing(1),
+  },
+}));
 
-  const BootstrapDialogTitle = (props) => {
-    const { children, onClose, ...other } = props;
-  
-    return (
-      <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-        {children}
-        {onClose ? (
-          <IconButton
-            aria-label="close"
-            onClick={onClose}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-              color: (theme) => theme.palette.grey[500],
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-        ) : null}
-      </DialogTitle>
-    );
-  };  
+const BootstrapDialogTitle = (props) => {
+  const { children, onClose, ...other } = props;
 
-  BootstrapDialogTitle.propTypes = {
-    children: PropTypes.node,
-    onClose: PropTypes.func.isRequired,
-  };
+  return (
+    <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
+      {children}
+      {onClose ? (
+        <IconButton
+          aria-label="close"
+          onClick={onClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : null}
+    </DialogTitle>
+  );
+};
+
+BootstrapDialogTitle.propTypes = {
+  children: PropTypes.node,
+  onClose: PropTypes.func.isRequired,
+};
 export default TrelloCard;

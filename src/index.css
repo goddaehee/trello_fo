@@ -27,18 +27,18 @@ header {
   top: 100px;
 }
 
-.add_card {
+.addCard {
   color: #5e6c84;
   padding: 6px 8px;
   border-radius: 3px;
   cursor: pointer;
 }
 
-.add_card:hover {
+.addCard:hover {
   background-color: #ffffff67;
 }
 
-.add_card_input {
+.addCardInput {
   display: inline-block;
   width: 235px;
   height: 73px;
@@ -48,7 +48,7 @@ header {
   position: relative;
 }
 
-.add_card_input > textarea {
+.addCardInput > textarea {
   -webkit-text-size-adjust: 100%;
   user-select: none;
   unicode-bidi: isolate;
@@ -74,7 +74,7 @@ header {
   resize: none;
 }
 
-.list_title_textarea {
+.listTitleTextarea {
   -webkit-text-size-adjust: 100%;
   user-select: all;
   white-space: nowrap;
@@ -102,7 +102,7 @@ header {
   height: 36px;
 }
 
-.add_list {
+.addList {
   display: inline-block;
   width: 300px;
   color: #fff;
@@ -114,11 +114,11 @@ header {
   top: 8px;
 }
 
-.add_list:hover {
+.addList:hover {
   background-color: #ffffff52;
 }
 
-.add_list_input {
+.addListInput {
   display: inline-block;
   width: 300px;
   height: 73px;
@@ -129,7 +129,7 @@ header {
   top: 8px;
 }
 
-.add_list_input > input {
+.addListInput > input {
   -webkit-text-size-adjust: 100%;
   user-select: none;
   white-space: nowrap;
@@ -155,9 +155,10 @@ header {
   width: 100%;
 }
 
-.add_list_input > button,
-.add_card_input > button,
-.popupBody > button {
+.addListInput > button,
+.addCardInput > button,
+.popupBody > button,
+.dialogContent button {
   -webkit-text-size-adjust: 100%;
   font: inherit;
   -webkit-appearance: none;
@@ -190,6 +191,10 @@ header {
   padding-top: 4px;
 }
 
+button:hover {
+  opacity: 0.8;
+}
+
 .menuIcon:hover {
   opacity: 1;
   transition: all 200ms;
@@ -208,4 +213,67 @@ header {
   background-color: #bbb;
   margin-left: 0px;
   width: 120%;
+}
+
+.flex-container {
+  display: flex;
+}
+
+.dialog-description-view {
+  width: 640px;
+  height: 100px;
+  background-color: #e4e7eb;
+  border: none;
+  border-radius: 3px;
+  box-shadow: none;
+  display: block;
+  min-height: 40px;
+  padding: 3px;
+  text-decoration: none;
+}
+
+.dialog-description-textarea {
+  all: unset;
+  width: 640px;
+  height: 100px;
+  background-color: white;
+  border: 1px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 2px #0079bf;
+  display: block;
+  min-height: 40px;
+  padding: 3px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+}
+
+.dialog-activity-box {
+  width: 620px;
+  height: 30px;
+  padding: 8px 12px;
+  position: relative;
+  background-color: #fff;
+  border-radius: 3px;
+  box-shadow: 0 5px 2px -1px #091e4240, 0 0 0 1px #091e4214;
+  margin: 4px 4px 12px 0;
+  overflow: hidden;
+  position: relative;
+  transition: box-shadow 85ms ease;
+}
+
+.dialog-activity-textarea {
+  all: unset;
+  background: #fff;
+  box-shadow: none;
+  box-sizing: initial;
+  margin: 0;
+  min-height: 20px;
+  max-width: 620px;
+  padding: 0;
+  resize: none;
+  width: 100%;
+  overflow: visible;
+  white-space: normal;
 }
