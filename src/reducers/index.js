@@ -114,11 +114,10 @@ function reducer(state = initialState, action) {
     let copy = [...state];
 
     copy.forEach((element) => {
-      if (element.workListId === action.payload[0]) {
-        element.workListTitle = action.payload[1];
+      if (element.workListId === action.payload.workListId) {
+        element.workListTitle = action.payload.workListTitle;
       }
     });
-
     return copy;
 
   } else if (action.type === 'addCard') {

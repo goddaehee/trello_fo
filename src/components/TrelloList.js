@@ -53,7 +53,7 @@ const TrelloList = (props) => {
           }
         ).then(response => {
           if (response.status === 200) {
-            dispatch({ type: "modListTitle", payload: [response.data, listTitle] });
+            dispatch({ type: "modListTitle", payload: response.data });
           }
         });
       }
