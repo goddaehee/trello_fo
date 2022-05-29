@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import "../index.css";
 import TrelloList from "./TrelloList";
@@ -6,32 +7,39 @@ import { DragDropContext } from "react-beautiful-dnd";
 import axios from "axios";
 
 function App() {
-  const reducer = useSelector((state) => state.reducer);
+  //const reducer = useSelector((state) => state.reducer);
 
   let [addListOpen, setAddListOpen] = useState(false);
   let [addListTitle, setAddListTitle] = useState("");
 
   let dispatch = useDispatch();
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   axios.get("https://localhost:8088/list").then((response) => {
+  //     const data = response.data;
+  //     dispatch({ type: "getList", payload: data });
+  //   });
+  // }, []);
+
+  const { isLoading, error, data, isFetching } = useQuery("repoData", () =>
     axios.get("https://localhost:8088/list").then((response) => {
-      const data = response.data;
-      dispatch({ type: "getList", payload: data });
-    });
-  }, []);
+      // const data = response.data;
+      // dispatch({ type: "getList", payload: data });
+      return response.data;
+    })
+  );
+
+  if (isLoading) return "Loading...,..................";
+  if (error) return "An error has occurred: " + error.message;
 
   return (
     <div className="App" style={{ whiteSpace: "nowrap" }}>
       <header></header>
       <DragDropContext>
         <div className="Contents">
-          {reducer.map((item, index) => {
+          {data.map((item, index) => {
             return (
-              <TrelloList
-                reducerData={reducer[index]}
-                index={index}
-                key={index}
-              />
+              <TrelloList reducerData={data[index]} index={index} key={index} />
             );
           })}
           {addListOpen === false ? (
