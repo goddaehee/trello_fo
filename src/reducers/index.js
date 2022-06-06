@@ -27,7 +27,7 @@ let list = [
   }, {
     workListId: 2,
     workListTitle: "두번째 리스트",
-    workListOrd: 1001,
+    workListOrd: 2001,
     useYn: 1,
     regId: "배찬2",
     regDtime: "2022-02-04",
@@ -36,13 +36,13 @@ let list = [
   }, {
     workListId: 3,
     workListTitle: "세번째 리스트",
-    workListOrd: 2001,
+    workListOrd: 3001,
     useYn: 1,
     regId: "배찬3",
     regDtime: "2022-03-13",
     modId: "배찬3",
     modDtime: "2022-03-13"
-  },
+  }
 ];
 
 let card = [
@@ -95,10 +95,6 @@ let card = [
 
 let initialState = [];
 
-let dataInfo = {
-  listLength: list.length
-};
-
 function reducer(state = initialState, action) {
   if (action.type === 'getList') {
     let copy = [...state];
@@ -106,10 +102,12 @@ function reducer(state = initialState, action) {
     console.log("-----------------");
     console.log(copy);
     return copy;
+
   } else if (action.type === 'addList') {
     let copy = [...state];
     copy.push(action.payload);
     return copy;
+
   } else if (action.type === 'modListTitle') {
     let copy = [...state];
 
@@ -128,6 +126,36 @@ function reducer(state = initialState, action) {
         element.cardList.push(action.payload);
       }
     });
+
+    return copy;
+
+  } else if (action.type === 'moveList') {
+    let copy = [...state];
+
+    console.log(action.payload[0]);
+    console.log(action.payload[1]);
+
+    [copy[action.payload[0]], copy[action.payload[1]]]
+      = [copy[action.payload[1]], copy[action.payload[0]]];
+
+    console.log(copy[action.payload[0]].workListId);
+    console.log(copy[action.payload[1]].workListId);
+
+    return copy;
+  } else if (action.type === 'copyList') {
+    let copy = [...state];
+    let temp = copy[action.payload];
+
+    copy.splice(action.payload, 0, temp);
+    console.log(copy);
+    return copy;
+
+  } else if (action.type === 'dragList') {
+    let copy = [...state];
+
+    const splicedItem = copy.splice(action.payload[0], 1);
+    copy.splice(action.payload[1], 0, ...splicedItem);
+    // db에서는 옮길 요소의 work_list_ordr를 옮겨질 요소와 그 옆의 인덱스 요소의 절반값으로 변경
 
     return copy;
 
@@ -266,9 +294,4 @@ function cardReducer(state = card, action) {
   }
 }
 
-function infoReducer(state = dataInfo, action) {
-  return state;
-}
-
-
-export default combineReducers({ infoReducer, reducer });
+export default combineReducers({ reducer });

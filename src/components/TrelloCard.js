@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import Card from "@material-ui/core/Card";
@@ -13,8 +13,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
-
 import CloseIcon from "@material-ui/icons/Close";
+
 
 const TrelloCard = (props) => {
   let [icon, setIcon] = useState(false);
@@ -24,7 +24,12 @@ const TrelloCard = (props) => {
 
   let dispatch = useDispatch();
 
+  // useEffect(() => {
+  //   setCardTitle(props.cardInfo.cardTitle);
+  // }, [props.cardInfo]);
+
   const onClickSave = () => {
+    console.log(cardTitle);
     setCardTitleOpen(false);
 
     if (cardTitle !== props.cardInfo.cardTitle) {
@@ -56,68 +61,34 @@ const TrelloCard = (props) => {
         ? setDialogActivityTextareaOpen(true)
         : setDialogActivityTextareaOpen(false);
     }
-
     e.currentTarget.style.height = e.currentTarget.scrollHeight + "px";
-    e.currentTarget.parentElement.style.height =
-      e.currentTarget.scrollHeight + "px";
-  };
+    e.currentTarget.parentElement.style.height = e.currentTarget.scrollHeight + "px";
+  }
+
 
   return (
     <>
-      <Draggable
-        draggableId={String(props.cardInfo.cardId)}
-        index={props.index}
-      >
-        {(provided) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            {cardTitleOpen === false ? (
-              <Card
-                style={styles.card}
-                onMouseEnter={() => setIcon(true)}
-                onMouseLeave={() => setIcon(false)}
-                onClick={handleClickOpen}
-              >
-                <Typography gutterBottom style={{ display: "inline" }}>
-                  {cardTitle}
-                </Typography>
-                {icon === true && (
-                  <EditIcon
-                    style={{ float: "right", color: "#bbb" }}
-                    onClick={(event) => {
-                      setCardTitleOpen(true);
-                      event.stopPropagation();
-                    }}
-                  ></EditIcon>
-                )}
-              </Card>
-            ) : (
-              <div className="addCardInput">
-                <textarea
-                  onChange={(e) => {
-                    setCardTitle(e.target.value);
-                  }}
-                  value={cardTitle}
-                  autoFocus
-                  onFocus={(e) => e.currentTarget.select()}
-                />
-                <button onClick={onClickSave}>Save</button>
-                <button
-                  onClick={() => {
-                    setCardTitleOpen(false);
-                    setCardTitle(props.cardInfo.cardTitle);
-                  }}
-                >
-                  Close
-                </button>
-              </div>
-            )}
-          </div>
-        )}
-      </Draggable>
+      <div>
+        {
+          cardTitleOpen === false
+            ? <Card style={styles.card} onMouseEnter={() => setIcon(true)}
+              onMouseLeave={() => setIcon(false)}
+              onClick={handleClickOpen} >
+              <Typography gutterBottom style={{ display: "inline" }}>
+                {props.cardInfo.cardTitle}
+              </Typography>
+              {icon === true && <EditIcon style={{ float: "right", color: "#bbb" }} onClick={(event) => { setCardTitleOpen(true); event.stopPropagation(); }}></EditIcon>}
+            </Card>
+            : <div className="addCardInput">
+              <textarea onChange={(e) => { setCardTitle(e.target.value) }} value={cardTitle}
+                autoFocus
+                onFocus={(e) => e.currentTarget.select()} />
+              <button onClick={onClickSave}>Save</button>
+              <button onClick={() => { setCardTitleOpen(false); setCardTitle(props.cardInfo.cardTitle) }}>Close</button>
+            </div>
+        }
+      </div>
+
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
