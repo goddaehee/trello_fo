@@ -117,10 +117,12 @@ function App() {
 
                 } else {
                   axios.post('https://localhost:8088/list',
-                    encodeURIComponent(addListTitle),
+                    {
+                      workListTitle: encodeURIComponent(addListTitle)
+                    },
                     {
                       headers: {
-                        'Content-Type': 'application/text'
+                        'Content-Type': 'application/json'
                       }
                     }
                   ).then(response => {

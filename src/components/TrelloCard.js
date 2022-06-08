@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import axios from "axios";
 
 import Card from "@material-ui/core/Card";
 import Typography from "@material-ui/core/Typography";
 import EditIcon from "@material-ui/icons/Edit";
-import { Draggable } from "react-beautiful-dnd";
 
 import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
@@ -34,10 +34,26 @@ const TrelloCard = (props) => {
 
     if (cardTitle !== props.cardInfo.cardTitle) {
       console.log("카드 타이틀 수정 dispatch 발생");
-      dispatch({
-        type: "updateCardTitle",
-        payload: [cardTitle, props.cardInfo.cardId],
-      });
+
+      axios
+        .put(
+          "https://localhost:8088/card/" + props.cardInfo.cardId,
+          {
+            cardTitle: cardTitle,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            dispatch({ type: "modCardTitle", payload: [props.cardInfo, cardTitle] });
+          } else {
+            console.log(response);
+          }
+        });
     }
   };
 
