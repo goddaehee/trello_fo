@@ -114,7 +114,13 @@ const TrelloList = (props) => {
       )
       .then((response) => {
         if (response.status === 200) {
-          response.data.cardList = props.reducerData.cardList;
+          // 깊은 복사 ( 얕은 복사 하니까 복사된 객체를 변경해도 복사한 객체도 변경됨 )
+          response.data.cardList = JSON.parse(JSON.stringify(props.reducerData.cardList));
+
+          response.data.cardList.forEach((card) => {
+            card.workListId = response.data.workListId;
+          });
+
           dispatch({ type: "copyList", payload: response.data });
         }
       }).catch((error) => {
