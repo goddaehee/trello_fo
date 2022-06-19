@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import axios from "axios";
 
 const getCurrentDate = () => {
   const date = new Date();
@@ -67,30 +68,30 @@ function reducer(state = initialState, action) {
   } else if (action.type === 'moveList') {
     let copy = [...state];
 
-    console.log(action.payload[0]);
-    console.log(action.payload[1]);
 
     [copy[action.payload[0]], copy[action.payload[1]]]
       = [copy[action.payload[1]], copy[action.payload[0]]];
 
-    console.log(copy[action.payload[0]].workListId);
-    console.log(copy[action.payload[1]].workListId);
 
     return copy;
   } else if (action.type === 'copyList') {
     let copy = [...state];
-    let temp = copy[action.payload];
 
-    copy.splice(action.payload, 0, temp);
+    // 추가된 list 객체 데이터 새로 return 받기
+    console.log(copy);
+    copy.push(action.payload);
+
+    copy.sort((a, b) => a.workListOrd - b.workListOrd);
     console.log(copy);
     return copy;
 
   } else if (action.type === 'dragList') {
     let copy = [...state];
 
-    const splicedItem = copy.splice(action.payload[0], 1);
-    copy.splice(action.payload[1], 0, ...splicedItem);
-    // db에서는 옮길 요소의 work_list_ordr를 옮겨질 요소와 그 옆의 인덱스 요소의 절반값으로 변경
+    copy[action.payload[0]].workListOrd = action.payload[1];
+
+    copy.sort((a, b) => a.workListOrd - b.workListOrd);
+    console.log(copy);
 
     return copy;
 

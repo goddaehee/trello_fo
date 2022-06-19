@@ -15,14 +15,15 @@ function App() {
   let dispatch = useDispatch();
 
   useEffect(() => {
-    axios.get("https://localhost:8088/list").then((response) => {
+    axios.get("https://43.200.85.188:8080/list").then((response) => {
+      console.log(response.status);
       const data = response.data;
       dispatch({ type: "getList", payload: data });
     });
   }, []);
 
   // const { isLoading, error, data, isFetching } = useQuery("repoData", () =>
-  //   axios.get("https://localhost:8088/list").then((response) => {
+  //   axios.get("https://43.200.85.188:8080/list").then((response) => {
   //     // const data = response.data;
   //     // dispatch({ type: "getList", payload: data });
   //     console.log(response);
@@ -42,12 +43,52 @@ function App() {
 
   const onDragEndList = (dropResult) => {
 
-    console.log(dropResult);
-
     if (!dropResult.destination) {
       return false;
     } else {
-      dispatch({ type: "dragList", payload: [dropResult.source.index, dropResult.destination.index] });
+
+      let newOrder = 0;
+      console.log(dropResult);
+
+      if (dropResult.destination.index === reducer.length - 1) {
+        // 맨 뒤로 드랍
+        newOrder = reducer[dropResult.destination.index].workListOrd + 1000;
+
+      } else if (dropResult.destination.index === 0) {
+        // 맨 앞으로 드랍
+        newOrder = Math.floor(reducer[0].workListOrd / 2)
+
+      } else {
+        if (dropResult.source.index < dropResult.destination.index) {
+          newOrder = Math.floor((reducer[dropResult.destination.index].workListOrd + reducer[dropResult.destination.index + 1].workListOrd) / 2);
+        } else if (dropResult.source.index > dropResult.destination.index) {
+          newOrder = Math.floor((reducer[dropResult.destination.index - 1].workListOrd + reducer[dropResult.destination.index].workListOrd) / 2);
+        } else {
+          // 아무 일도 일어나지 않음
+          return false;
+        }
+
+      }
+      axios
+        .put(
+          "https://43.200.85.188:8080/list/move/" + reducer[dropResult.source.index].workListId,
+          newOrder,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          if (response.status === 200) {
+            dispatch({ type: "dragList", payload: [dropResult.source.index, newOrder] });
+          } else {
+            console.log(response.status);
+          }
+        }).catch((error) => {
+          console.log("에러가 발생하였습니다.", error.response);
+        });
+
     }
   };
 
@@ -116,7 +157,7 @@ function App() {
                   return false;
 
                 } else {
-                  axios.post('https://localhost:8088/list',
+                  axios.post('https://43.200.85.188:8080/list',
                     {
                       workListTitle: encodeURIComponent(addListTitle)
                     },

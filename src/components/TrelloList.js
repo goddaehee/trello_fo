@@ -10,6 +10,7 @@ import axios from "axios";
 import { Draggable } from "react-beautiful-dnd";
 
 const TrelloList = (props) => {
+
   let [addCardOpen, setAddCardOpen] = useState(false);
   let [addCardTitle, setAddCardTitle] = useState("");
 
@@ -44,7 +45,7 @@ const TrelloList = (props) => {
 
         axios
           .put(
-            "https://localhost:8088/list/" + props.reducerData.workListId,
+            "https://43.200.85.188:8080/list/" + props.reducerData.workListId,
             {
               workListTitle: listTitle,
             },
@@ -58,6 +59,8 @@ const TrelloList = (props) => {
             if (response.status === 200) {
               dispatch({ type: "modListTitle", payload: response.data });
             }
+          }).catch((error) => {
+            console.log(error.response);
           });
       }
     } else if (type === "card") {
@@ -68,10 +71,10 @@ const TrelloList = (props) => {
 
       axios
         .post(
-          "https://localhost:8088/card",
+          "https://43.200.85.188:8080/card",
           {
             cardTitle: addCardTitle,
-            workListId: props.reducerData.workListId,
+            workListId: props.reducerData.workListId
           },
           {
             headers: {
@@ -83,12 +86,41 @@ const TrelloList = (props) => {
           if (response.status === 200) {
             dispatch({ type: "addCard", payload: response.data });
           }
+        }).catch((error) => {
+          console.log(error.response);
         });
     }
   };
 
   const copyList = () => {
-    dispatch({ type: "copyList", payload: props.index });
+    console.log(props);
+
+    let newOrder = 0;
+    if (props.index === props.totalList.length - 1) {
+      newOrder = props.reducerData.workListOrd + 1000;
+    } else {
+      newOrder = Math.floor((props.reducerData.workListOrd + props.totalList[props.index + 1].workListOrd) / 2);
+    }
+
+    axios
+      .post(
+        "https://43.200.85.188:8080/list/copy/" + props.reducerData.workListId,
+        newOrder,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        if (response.status === 200) {
+          response.data.cardList = props.reducerData.cardList;
+          dispatch({ type: "copyList", payload: response.data });
+        }
+      }).catch((error) => {
+        alert("리스트 복사를 실패하였습니다.");
+        console.log(error.response);
+      });
   }
 
   const moveList = () => {

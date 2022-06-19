@@ -51,5 +51,9 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://trello-bchan.netlify.app/"
+  "homepage": "https://trello-bchan.netlify.app/",
+  "resolutions": {
+    "//": "See https://github.com/facebook/create-react-app/issues/11773",
+    "react-error-overlay": "6.0.9"
+  }
 }

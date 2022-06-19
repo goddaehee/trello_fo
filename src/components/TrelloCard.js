@@ -37,9 +37,9 @@ const TrelloCard = (props) => {
 
       axios
         .put(
-          "https://localhost:8088/card/" + props.cardInfo.cardId,
+          "https://43.200.85.188:8080/card/" + props.cardInfo.cardId,
           {
-            cardTitle: cardTitle,
+            cardTitle: cardTitle
           },
           {
             headers: {
