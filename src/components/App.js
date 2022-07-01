@@ -81,7 +81,7 @@ function App() {
         )
         .then((response) => {
           if (response.status === 200) {
-            dispatch({ type: "dragList", payload: [dropResult.source.index, newOrder] });
+            dispatch({ type: "moveList", payload: [dropResult.source.index, newOrder] });
           } else {
             console.log(response.status);
           }

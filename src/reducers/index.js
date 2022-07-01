@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import axios from "axios";
 
 const getCurrentDate = () => {
   const date = new Date();
@@ -65,15 +64,14 @@ function reducer(state = initialState, action) {
     });
     return copy;
 
-  } else if (action.type === 'moveList') {
+  } else if (action.type === 'swapList') {
     let copy = [...state];
-
 
     [copy[action.payload[0]], copy[action.payload[1]]]
       = [copy[action.payload[1]], copy[action.payload[0]]];
 
-
     return copy;
+
   } else if (action.type === 'copyList') {
     let copy = [...state];
 
@@ -85,7 +83,7 @@ function reducer(state = initialState, action) {
     console.log(copy);
     return copy;
 
-  } else if (action.type === 'dragList') {
+  } else if (action.type === 'moveList') {
     let copy = [...state];
 
     copy[action.payload[0]].workListOrd = action.payload[1];

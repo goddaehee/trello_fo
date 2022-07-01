@@ -17,7 +17,7 @@ const TrelloList = (props) => {
   let [listTitleOpen, setListTitleOpen] = useState(false);
   let [listTitle, setListTitle] = useState(props.reducerData.workListTitle);
 
-  let [moveListOpen, setMoveListOpen] = useState(false);
+  let [swapListOpen, setswapListOpen] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -129,8 +129,33 @@ const TrelloList = (props) => {
       });
   }
 
-  const moveList = () => {
-    dispatch({ type: "moveList", payload: [props.index, Number(document.getElementById("selectPosition").value - 1)] });
+  const swapList = () => {
+
+    const list1 = props.index;
+    const list2 = Number(document.getElementById("selectPosition").value - 1);
+
+    axios.
+      put(
+        "https://43.200.85.188:8080/list/swap/",
+        {
+          workListId1: props.totalList[list1].workListId,
+          workListId2: props.totalList[list2].workListId
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ).then((response) => {
+        if (response.status === 200) {
+          dispatch({ type: "swapList", payload: [list1, list2] });
+        }
+      }).catch((error) => {
+        alert("리스트 스왑이 실패하였습니다.");
+        console.log(error.response);
+      });
+
+
   }
 
   useEffect(() => {
@@ -158,7 +183,7 @@ const TrelloList = (props) => {
               }}>
 
               {
-                moveListOpen === false
+                swapListOpen === false
                   ? <div style={styles.popupContainer}>
                     <div style={styles.popupHeader}>
                       List actions
@@ -169,14 +194,14 @@ const TrelloList = (props) => {
                       <ul>
                         <li onClick={() => { setAddCardOpen(true); handleClose(); }}>Add card...</li>
                         <li onClick={() => { copyList(); handleClose(); }}>Copy list...</li>
-                        <li onClick={() => { setMoveListOpen(true) }}>Move list...</li>
+                        <li onClick={() => { setswapListOpen(true) }}>Move list...</li>
                       </ul>
                     </div>
                   </div>
                   : <div style={styles.popupContainer}>
                     <div style={styles.popupHeader}>
                       Move list
-                      <CloseIcon onClick={() => { handleClose(); setTimeout(() => { setMoveListOpen(false) }, 500) }} style={{ "float": "right", "cursor": "pointer" }} />
+                      <CloseIcon onClick={() => { handleClose(); setTimeout(() => { setswapListOpen(false) }, 500) }} style={{ "float": "right", "cursor": "pointer" }} />
                     </div>
                     <div style={styles.popupBody} className="popupBody">
                       <div style={{ "display": "flex" }}>
@@ -194,7 +219,7 @@ const TrelloList = (props) => {
                           }
                         </select>
                       </div>
-                      <button onClick={() => { moveList(); handleClose(); setTimeout(() => { setMoveListOpen(false) }, 500) }}>Move</button>
+                      <button onClick={() => { swapList(); handleClose(); setTimeout(() => { setswapListOpen(false) }, 500) }}>Move</button>
                     </div>
                   </div>
               }
